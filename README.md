@@ -39,15 +39,18 @@ To make it executable:
 ![image](https://user-images.githubusercontent.com/108779415/177899289-40cfa492-59d2-4fd5-9fd1-b837a9db0627.png)
 
 
+
 **4)** Use this *exact* command to encrypt the autoexpect script file so no one can look inside it:
 
 **( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null**
+
+
 
 **Warning: Do not change the path of the 'script' file since the cronjob depends on it.**
 
 The path to the directory with everything in it is **/root/.kpass**
 
-And we're done!
+*And we're done!*
 
 If you messed up your input don't worry just rerun the script with autoexpect, it will overwrite everything.
 
