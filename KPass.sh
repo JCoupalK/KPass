@@ -60,36 +60,188 @@ fi
 kill -9 $SPIN_PID &> /dev/null
 tput cnorm
 echo ""
+echo ""
+echo ""
 
-#user to set the password for
-echo ""
-echo ""
+#user confirmation
+function confirmUser {
+  
 read -p "What is the ${YEL}user${NC} that you want to use that script for : " User1
 echo ""
-printf "${RED}Absolutely do NOT lose the passwords you will put in right now${NC}\n\n"
+grep1=$(grep -c $User1: /etc/passwd)
+userGrep="$(echo ${grep1})"
+
+if [[ $userGrep == 0 ]]; 
+
+then printf "${RED}This user does not exist! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmUser;
+
+fi
+
+}
+
+confirmUser
+
+printf "${RED}Absolutely do NOT lose the passwords you're about to put in${NC}\n\n"
 sleep 1
 
+#password confirmation
+function confirmPasswd1 {
+  
 read -s -p "What is the password that you want for ${YEL}Monday${NC} : " passwd1
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd1
+echo ""
+echo ""
+if [[ $passwd1 != $truepasswd1 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd1;
+
+fi
+
+}
+
+function confirmPasswd2 {
+  
 read -s -p "What is the password that you want for ${YEL}Tuesday${NC} : " passwd2
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd2
+echo ""
+echo ""
+if [[ $passwd2 != $truepasswd2 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd2;
+
+fi
+
+}
+
+function confirmPasswd3 {
+  
 read -s -p "What is the password that you want for ${YEL}Wednesday${NC} : " passwd3
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd3
+echo ""
+echo ""
+if [[ $passwd3 != $truepasswd3 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd3;
+
+fi
+
+}
+
+function confirmPasswd4 {
+  
 read -s -p "What is the password that you want for ${YEL}Thursday${NC} : " passwd4
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd4
+echo ""
+echo ""
+if [[ $passwd4 != $truepasswd4 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd4;
+
+fi
+
+}
+
+function confirmPasswd5 {
+  
 read -s -p "What is the password that you want for ${YEL}Friday${NC} : " passwd5
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd5
+echo ""
+echo ""
+if [[ $passwd5 != $truepasswd5 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd5;
+
+fi
+
+}
+
+function confirmPasswd6 {
+  
 read -s -p "What is the password that you want for ${YEL}Saturday${NC} : " passwd6
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd6
+echo ""
+echo ""
+if [[ $passwd6 != $truepasswd6 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd6;
+
+fi
+
+}
+
+function confirmPasswd7 {
+  
 read -s -p "What is the password that you want for ${YEL}Sunday${NC} : " passwd7
 echo ""
 echo ""
+read -s -p "Confirm your password : " truepasswd7
+echo ""
+echo ""
+if [[ $passwd7 != $truepasswd7 ]]; 
+
+then printf "${RED}Passwords are different! Try again\n\n${NC}";
+
+sleep 0.5; 
+
+confirmPasswd7;
+
+fi
+
+}
+
+confirmPasswd1
+
+confirmPasswd2
+
+confirmPasswd3
+
+confirmPasswd4
+
+confirmPasswd5
+
+confirmPasswd6
+
+confirmPasswd7
 
 #salt is randomly generated with the variable pepper
 pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13)
