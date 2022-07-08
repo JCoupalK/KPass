@@ -141,14 +141,13 @@ fi
 
 sudo chmod +x script.exp &> /dev/null
 
-croncmd="./script &> /dev/null"
+croncmd="cd /root/.kpass && ./script &> /dev/null"
 cronjob="* 12 * * * $croncmd"
 
-( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) &> /dev/null | crontab -
 
-printf "${GRN}\nWe're done!\n${NC}"
+printf "${GRN}\nWe're done!\n"
 echo ""
-
-#run ( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null after exit
+printf "Please run this after exit: ( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null\n\n${NC}"
 
 exit
