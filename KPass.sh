@@ -296,10 +296,10 @@ sudo chmod +x script.exp &> /dev/null
 croncmd="cd /root/.kpass && ./script &> /dev/null"
 cronjob="* 12 * * * $croncmd"
 
-( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) &> /dev/null | crontab -
+( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 printf "${GRN}\nWe're done!\n"
 echo ""
-printf "Please run this after exit: ( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null\n\n${NC}"
+printf "Please run this after exit: ${YEL}( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null\n\n${NC}"
 
 exit
