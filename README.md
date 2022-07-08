@@ -1,6 +1,6 @@
 # KPass
 
-## *A bash script that changes a user password based on the day of the week automatically configurated by user input that randomly generate salt of hashes*
+## *A bash script that changes a user password based on the day of the week automatically configurated by user input that randomly generate the salt of hashes*
 
 ### ***Prerequisites:***
 
