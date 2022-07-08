@@ -26,7 +26,7 @@ To install it:
 
 To make it executable:
 
-**sudo chmod +x KPass.sh**
+**chmod +x KPass.sh**
 
 **2)** Then run: 
 
@@ -40,7 +40,7 @@ To make it executable:
 
 
 
-**4)** Use this *exact* command to encrypt the autoexpect script file so no one can look inside it:
+**4)** Use this *exact* command with the parentheses to encrypt the autoexpect script file so no one can look inside it:
 
 **( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null**
 
