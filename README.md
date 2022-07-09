@@ -21,9 +21,9 @@ That's it!
 **1)** Install the KPass.sh file and make it executable.
 
 To install it: 
-
-**wget https://raw.githubusercontent.com/KeepSec-Technologies/KPass/main/KPass.sh**
-
+'''bash
+wget https://raw.githubusercontent.com/KeepSec-Technologies/KPass/main/KPass.sh
+'''
 To make it executable:
 
 **chmod +x KPass.sh**
