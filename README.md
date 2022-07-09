@@ -14,7 +14,7 @@ RHEL-based OS:
 ```bash
 sudo yum install -y expect
 ```
-**2)** Being logged in as root (Very Important)
+**2)** Being logged in as root (Very Important to access /etc/shadow)
 
 **3)** Assure yourself that the timezone of your server is the good one
 
