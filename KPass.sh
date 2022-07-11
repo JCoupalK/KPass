@@ -293,7 +293,7 @@ fi
 
 sudo chmod +x script.exp &> /dev/null
 
-croncmd="cd /root/.kpass && ./script &> /dev/null"
+croncmd="(cd /root/.kpass && ./script)>kpass.log"
 cronjob="* 12 * * * $croncmd"
 
 ( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
