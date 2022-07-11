@@ -291,6 +291,7 @@ elif [ $whichday == "Sunday" ]; then
   usermod -p $Sunday1 $User1
 fi
 
+#makes cronjob
 sudo chmod +x script.exp &> /dev/null
 
 croncmd="(cd /root/.kpass && ./script)>kpass.log"
