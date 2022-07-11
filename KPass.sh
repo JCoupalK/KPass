@@ -294,13 +294,14 @@ fi
 #makes cronjob
 sudo chmod +x script.exp &> /dev/null
 
-croncmd="(cd /root/.kpass && ./script)>kpass.log"
+croncmd="(cd /root/.kpass/$User1 && ./script)>kpass.log"
 cronjob="* 12 * * * $croncmd"
 
-( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
-
+echo "$cronjob" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
 echo ""
-printf "Please run this after exit: ${YEL}( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null\n\n${NC}"
+printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
+
+sudo mkdir /root/.kpass/$User1 &> /dev/null
 
 exit
