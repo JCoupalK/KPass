@@ -46,9 +46,9 @@ autoexpect -quiet $PWD/KPass.sh
 
 
 
-**4)** Use this *exact* command after exit to encrypt the autoexpect script file so no one can look inside it:
+**4)** Use this *exact* command (with your user from the script) after exit to encrypt the autoexpect script file so no one can look inside it:
 ```bash
-( /root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp ) &> /dev/null
+(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/[YOUR USER]) &> /dev/null
 ```
 
 
