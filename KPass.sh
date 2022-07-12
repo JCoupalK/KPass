@@ -40,10 +40,10 @@ disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo apt-get -y install cargo &>/dev/null
+  sudo apt-get -y install perl >/dev/null
 
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo yum -y install cargo &>/dev/null
+  sudo yum -y install perl >/dev/null
 
 else
 
