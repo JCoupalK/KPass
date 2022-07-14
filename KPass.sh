@@ -281,7 +281,7 @@ fi
 #makes cronjob
 sudo chmod +x script.exp &>/dev/null
 
-croncmd="(/usr/bin/expect /root/.kpass/$User1/script.exp)>/root/.kpass/$User1/kpass.log"
+croncmd="(cd /root/.kpass/$User1 && ./script)>/root/.kpass/$User1/kpass.log"
 cronjob="* 12 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
