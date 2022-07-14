@@ -292,5 +292,5 @@ printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.ex
 
 sudo mkdir /root/.kpass/$User1 &>/dev/null
 
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
+(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 $PWD/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 exit
