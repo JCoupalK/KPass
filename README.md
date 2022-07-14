@@ -48,6 +48,10 @@ autoexpect -c -quiet $PWD/KPass.sh
 
 **Warning: Do not change the path of the 'script.exp' file since the cronjob depends on it.**
 
+**4)** Use this *exact* command (with your user from the script) after exit to encrypt the script.exp file so no one can look inside it:
+```bash
+(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/[YOUR USER])
+```
 The path to the directory with everything in it is **/root/.kpass**
 
 *And we're done!*
