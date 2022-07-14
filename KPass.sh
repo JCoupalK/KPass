@@ -20,7 +20,7 @@ printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/
 sleep 0.5
 
 sudo mkdir /root/.kpass &>/dev/null
-cd /root/.kpass &>/dev/null
+cd /root/.kpass &> /dev/null
 
 function installing {
   tput civis
@@ -287,9 +287,12 @@ cronjob="* 12 * * * $croncmd"
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
 echo ""
+#encrypt expect
 printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
 sudo mkdir /root/.kpass/$User1 &>/dev/null
 (chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 
+
+exec bash
 exit
