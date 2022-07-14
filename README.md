@@ -52,7 +52,7 @@ autoexpect -c -quiet $PWD/KPass.sh
 ```bash
 (/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/[YOUR USER])
 ```
-The path to the directory with everything in it is **/root/.kpass**
+The path to the directory with everything in it is **/root/.kpass** and the cronjob log is in **/root/.kpass/[YOUR USER]/kpass.log
 
 *And we're done!*
 
