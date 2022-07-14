@@ -1,10 +1,10 @@
 #!/bin/bash
-YEL=$'\e[1;33m'
-RED=$'\033[0;31m'
+YEL=$'\e[1;33m' # Yellow
+RED=$'\033[0;31m' # Red
 NC=$'\033[0m' # No Color
-PRPL=$'\033[1;35m'
-GRN=$'\e[1;32m'
-BLUE=$'\e[3;49;34m'
+PRPL=$'\033[1;35m' # Purple
+GRN=$'\e[1;32m' # Green
+BLUE=$'\e[3;49;34m' # Blue
 
 printf "${BLUE}\n"
 echo '██╗  ██╗██████╗  █████╗ ███████╗███████╗'
@@ -279,9 +279,9 @@ elif [ $whichday == "Sunday" ]; then
 fi
 
 #makes cronjob
-sudo chmod +x script.exp &>/dev/null
+sudo chmod +x script.exp &> /dev/null
 
-croncmd="(cd /root/.kpass/$User1 && ./script)>/root/.kpass/$User1/kpass.log"
+croncmd="(date && cd /root/.kpass/root && ./script) > /root/.kpass/root/kpass.log"
 cronjob="* 12 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
@@ -291,8 +291,6 @@ echo ""
 printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
 sudo mkdir /root/.kpass/$User1 &>/dev/null
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 
-
-exec bash
+(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 exit
