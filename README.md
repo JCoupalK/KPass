@@ -36,9 +36,9 @@ chmod +x KPass.sh
 ```
 **2)** Then run: 
 ```bash
-autoexpect -quiet $PWD/KPass.sh
+autoexpect -c -quiet $PWD/KPass.sh
 ```
-***(Very important to use this exact command)***
+***(Very important to use this exact command or it will not work)***
 
 **3)** Answer the questions like the image below
 
