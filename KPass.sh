@@ -17,7 +17,6 @@ printf "\nPowered by KeepSec Technologies Inc.™\n"
 printf "${NC}\n\n"
 
 printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/KeepSec-Technologies/KPass)${NC}\n\n"
-sleep 0.5
 
 sudo mkdir /root/.kpass &>/dev/null
 cd /root/.kpass &> /dev/null
@@ -282,7 +281,7 @@ fi
 sudo chmod +x script.exp &> /dev/null
 
 croncmd="(date && cd /root/.kpass/root && ./script) > /root/.kpass/root/kpass.log"
-cronjob="* 12 * * * $croncmd"
+cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
