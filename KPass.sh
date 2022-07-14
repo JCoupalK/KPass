@@ -40,10 +40,10 @@ disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null
+  sudo apt-get -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo apt-get -y install cargo &>/dev/null
 
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null
+  sudo yum -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo yum -y install cargo &>/dev/null
 
 else
 
@@ -287,9 +287,9 @@ cronjob="* 12 * * * $croncmd"
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
 echo ""
-printf "Please run this after exit: ${YEL}mv script.exp /root/.kpass/$User1\n\n${NC}"
+printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
 sudo mkdir /root/.kpass/$User1 &>/dev/null
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script.exp) &>/dev/null
+(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 
 exit
