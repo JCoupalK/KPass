@@ -281,7 +281,7 @@ fi
 #makes cronjob
 sudo chmod +x script.exp &> /dev/null
 
-croncmd="(date && cd /root/.kpass/$User1 && ./script) > /root/.kpass/$User1/kpass.log"
+croncmd="(date && cd /root/.kpass/$User1 && /bin/timeout -s 2 10 ./script) > /root/.kpass/$User1/kpass.log"
 cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
