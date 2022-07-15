@@ -18,7 +18,7 @@ printf "${NC}\n\n"
 
 printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/KeepSec-Technologies/KPass)${NC}\n\n"
 
-chmod 700 $PWD/KPass.sh
+chmod 700 $PWD/KPass.sh &>/dev/null
 sudo mkdir /root/.kpass &>/dev/null
 cd /root/.kpass &> /dev/null
 
@@ -281,7 +281,7 @@ fi
 #makes cronjob
 sudo chmod +x script.exp &> /dev/null
 
-croncmd="(date && cd /root/.kpass/$User1 && /bin/timeout -s 2 10 ./script) > /root/.kpass/$User1/kpass.log"
+croncmd="(date && cd /root/.kpass/$User1 && /bin/timeout -s 2 30 ./script) > /root/.kpass/$User1/kpass.log"
 cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
