@@ -1,10 +1,10 @@
 #!/bin/bash
-YEL=$'\e[1;33m'
-RED=$'\033[0;31m'
+YEL=$'\e[1;33m' # Yellow
+RED=$'\033[0;31m' # Red
 NC=$'\033[0m' # No Color
-PRPL=$'\033[1;35m'
-GRN=$'\e[1;32m'
-BLUE=$'\e[3;49;34m'
+PRPL=$'\033[1;35m' # Purple
+GRN=$'\e[1;32m' # Green
+BLUE=$'\e[3;49;34m' # Blue
 
 printf "${BLUE}\n"
 echo '██╗  ██╗██████╗  █████╗ ███████╗███████╗'
@@ -17,10 +17,10 @@ printf "\nPowered by KeepSec Technologies Inc.™\n"
 printf "${NC}\n\n"
 
 printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/KeepSec-Technologies/KPass)${NC}\n\n"
-sleep 0.5
 
+chmod 700 $PWD/KPass.sh
 sudo mkdir /root/.kpass &>/dev/null
-cd /root/.kpass &>/dev/null
+cd /root/.kpass &> /dev/null
 
 function installing {
   tput civis
@@ -40,10 +40,10 @@ disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null
+  sudo apt-get -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo apt-get -y install cargo &>/dev/null
 
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null
+  sudo yum -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo yum -y install cargo &>/dev/null
 
 else
 
@@ -279,17 +279,18 @@ elif [ $whichday == "Sunday" ]; then
 fi
 
 #makes cronjob
-sudo chmod +x script.exp &>/dev/null
+sudo chmod +x script.exp &> /dev/null
 
-croncmd="(/usr/bin/expect /root/.kpass/$User1/script.exp)>/root/.kpass/$User1/kpass.log"
-cronjob="* 12 * * * $croncmd"
+croncmd="(date && cd /root/.kpass/$User1 && ./script) > /root/.kpass/$User1/kpass.log"
+cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
 echo ""
-printf "Please run this after exit: ${YEL}mv script.exp /root/.kpass/$User1\n\n${NC}"
+#encrypt expect
+printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
 sudo mkdir /root/.kpass/$User1 &>/dev/null
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/KPass.sh && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script.exp) &>/dev/null
 
+(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
 exit

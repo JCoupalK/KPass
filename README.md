@@ -36,9 +36,9 @@ chmod +x KPass.sh
 ```
 **2)** Then run: 
 ```bash
-autoexpect -quiet $PWD/KPass.sh
+autoexpect -c -quiet $PWD/KPass.sh
 ```
-***(Very important to use this exact command)***
+***(Very important to use this exact command or it will not work)***
 
 **3)** Answer the questions like the image below
 
@@ -48,7 +48,11 @@ autoexpect -quiet $PWD/KPass.sh
 
 **Warning: Do not change the path of the 'script.exp' file since the cronjob depends on it.**
 
-The path to the directory with everything in it is **/root/.kpass**
+**4)** Use this *exact* command (with your user from the script) after exit to encrypt the script.exp file so no one can look inside it:
+```bash
+(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/[YOUR USER])
+```
+The path to the directory with everything in it is **/root/.kpass** and the cronjob log is in **/root/.kpass/[YOUR USER]/kpass.log
 
 *And we're done!*
 
