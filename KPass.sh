@@ -282,7 +282,7 @@ fi
 sudo chmod +x script.exp &> /dev/null
 
 croncmd="(date && cd /root/.kpass/$User1 && /bin/timeout -s 2 60 ./script) > /root/.kpass/$User1/kpass.log"
-cronjob="* 6 * * * $croncmd"
+cronjob="* 2 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}\nWe're done!\n"
