@@ -13,14 +13,11 @@ echo '█████╔╝ ██████╔╝███████║█�
 echo '██╔═██╗ ██╔═══╝ ██╔══██║╚════██║╚════██║'
 echo '██║  ██╗██║     ██║  ██║███████║███████║'
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
-printf "\nPowered by KeepSec Technologies Inc.™\n"
-printf "${NC}\n\n"
+printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
-printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/KeepSec-Technologies/KPass)${NC}\n\n"
-
-chmod 700 $PWD/KPass.sh
-sudo mkdir /root/.kpass &>/dev/null
-cd /root/.kpass &> /dev/null
+chmod 700 $PWD/KPass.sh &>/dev/null
+sudo mkdir $PWD/.kpass &>/dev/null
+cd $PWD/.kpass &> /dev/null
 
 function installing {
   tput civis
@@ -40,10 +37,9 @@ disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo apt-get -y install cargo &>/dev/null
-
+  sudo apt-get -y install perl >/dev/null
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo yum -y install cargo &>/dev/null
+  sudo yum -y install perl >/dev/null
 
 else
 
@@ -232,7 +228,7 @@ confirmPasswd6
 confirmPasswd7
 
 #salt is randomly generated with the variable pepper
-pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13)
+pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
 salt1=$(echo ${pepper})
 salt2=$(echo ${pepper})
 salt3=$(echo ${pepper})
@@ -251,46 +247,54 @@ hash6=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";
 hash7=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd7" "$salt7")
 
 #password to set for each day
-Monday1=$(echo ${hash1})
-Tuesday1=$(echo ${hash2})
-Wednesday1=$(echo ${hash3})
-Thursday1=$(echo ${hash4})
-Friday1=$(echo ${hash5})
-Saturday1=$(echo ${hash6})
-Sunday1=$(echo ${hash7})
+Monday1=$(echo "'"${hash1}"'")
+Tuesday1=$(echo "'"${hash2}"'")
+Wednesday1=$(echo "'"${hash3}"'")
+Thursday1=$(echo "'"${hash4}"'")
+Friday1=$(echo "'"${hash5}"'")
+Saturday1=$(echo "'"${hash6}"'")
+Sunday1=$(echo "'"${hash7}"'")
 
-#get the date
-whichday=$(date +"%A")
 
-if [ $whichday == "Monday" ]; then
+echo "#!/bin/bash
+
+YEL=\$'\e[1;33m' # Yellow
+NC=\$'\033[0m' # No Color
+
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
+printf "'"\nKPass cron succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+
+whichday=\$(date "'"+%A"'")
+
+if [[ \$whichday == "'"Monday"'" ]]; then
   usermod -p $Monday1 $User1
-elif [ $whichday == "Tuesday" ]; then
+elif [[ \$whichday == "'"Tuesday"'" ]]; then
   usermod -p $Tuesday1 $User1
-elif [ $whichday == "Wednesday" ]; then
+elif [[ \$whichday == "'"Wednesday"'" ]]; then
   usermod -p $Wednesday1 $User1
-elif [ $whichday == "Thursday" ]; then
+elif [[ \$whichday == "'"Thursday"'" ]]; then
   usermod -p $Thursday1 $User1
-elif [ $whichday == "Friday" ]; then
+elif [[ \$whichday == "'"Friday"'" ]]; then
   usermod -p $Friday1 $User1
-elif [ $whichday == "Saturday" ]; then
+elif [[ \$whichday == "'"Saturday"'" ]]; then
   usermod -p $Saturday1 $User1
-elif [ $whichday == "Sunday" ]; then
+elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
-fi
+fi" > Exec$User1-KPass.sh
 
 #makes cronjob
-sudo chmod +x script.exp &> /dev/null
-
-croncmd="(date && cd /root/.kpass/$User1 && ./script) > /root/.kpass/$User1/kpass.log"
+sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
 cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
-printf "${GRN}\nWe're done!\n"
+printf "${GRN}We're done!\n${NC}"
 echo ""
 #encrypt expect
-printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
-sudo mkdir /root/.kpass/$User1 &>/dev/null
+sudo mkdir $User1 &> /dev/null
+sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
 
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
+(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
+
 exit

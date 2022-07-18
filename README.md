@@ -4,19 +4,9 @@
 
 ### ***Prerequisites:***
 
-**1)** Install 'expect' to be able to use the autoexpect command:
+**1)** Being logged in as root (Very Important to access /etc/shadow)
 
-Debian-based OS: 
-```bash
-sudo apt-get install -y expect
-```
-RHEL-based OS: 
-```bash
-sudo yum install -y expect
-```
-**2)** Being logged in as root (Very Important to access /etc/shadow)
-
-**3)** Assure yourself that the timezone of your server is the good one
+**2)** Assure yourself that the timezone of your server is the good one
 
 That's it!
 
@@ -34,28 +24,23 @@ To make it executable:
 ```bash
 chmod +x KPass.sh
 ```
-**2)** Then run: 
+**2)** Then run it: 
 ```bash
-autoexpect -c -quiet $PWD/KPass.sh
+./KPass.sh
 ```
-***(Very important to use this exact command or it will not work)***
 
 **3)** Answer the questions like the image below
 
-![image](https://user-images.githubusercontent.com/108779415/177899289-40cfa492-59d2-4fd5-9fd1-b837a9db0627.png)
+![image](https://user-images.githubusercontent.com/108779415/179622354-ea57f2b9-b33f-45c3-9a8d-1208a8e92d03.png)
 
 
 
-**Warning: Do not change the path of the 'script.exp' file since the cronjob depends on it.**
+**Warning: Do not change the path of the files in the '.kpass' directory since the cronjob depends on it.**
 
-**4)** Use this *exact* command (with your user from the script) after exit to encrypt the script.exp file so no one can look inside it:
-```bash
-(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/[YOUR USER])
-```
-The path to the directory with everything in it is **/root/.kpass** and the cronjob log is in **/root/.kpass/[YOUR USER]/kpass.log
+The path to the directory with everything in it is **$PWD/.kpass** and the cronjob log is in **$PWD/.kpass/[YOUR USER]/kpass.log
 
 *And we're done!*
 
-If you messed up your input don't worry just rerun the script with autoexpect, it will overwrite everything.
+If you messed up your input don't worry just re-run the script, it will overwrite everything.
 
 Feel free to modify the code if there's something that you want to change.
