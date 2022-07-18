@@ -16,7 +16,8 @@ echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═════�
 printf "\nPowered by KeepSec Technologies Inc.™\n"
 printf "${NC}\n\n"
 
-printf "${GRN}This script must be run with 'autoexpect' (see https://github.com/KeepSec-Technologies/KPass)${NC}\n\n"
+whichdate=$(date "+%A, %F, %I:%M")
+printf "Today is ${YEL}$whichdate${NC}\n\n"
 
 chmod 700 $PWD/KPass.sh &>/dev/null
 sudo mkdir /root/.kpass &>/dev/null
@@ -259,38 +260,41 @@ Friday1=$(echo ${hash5})
 Saturday1=$(echo ${hash6})
 Sunday1=$(echo ${hash7})
 
-#get the date
-whichday=$(date +"%A")
 
-if [ $whichday == "Monday" ]; then
+echo "#!/bin/bash
+
+#get the date
+whichday=\$(date +"%A")
+
+if [ \$whichday == "Monday" ]; then
   usermod -p $Monday1 $User1
-elif [ $whichday == "Tuesday" ]; then
+elif [ \$whichday == "Tuesday" ]; then
   usermod -p $Tuesday1 $User1
-elif [ $whichday == "Wednesday" ]; then
+elif [ \$whichday == "Wednesday" ]; then
   usermod -p $Wednesday1 $User1
-elif [ $whichday == "Thursday" ]; then
+elif [ \$whichday == "Thursday" ]; then
   usermod -p $Thursday1 $User1
-elif [ $whichday == "Friday" ]; then
+elif [ \$whichday == "Friday" ]; then
   usermod -p $Friday1 $User1
-elif [ $whichday == "Saturday" ]; then
+elif [ \$whichday == "Saturday" ]; then
   usermod -p $Saturday1 $User1
-elif [ $whichday == "Sunday" ]; then
+elif [ \$whichday == "Sunday" ]; then
   usermod -p $Sunday1 $User1
-fi
+fi" > Exec$User1-KPass.sh
 
 #makes cronjob
-sudo chmod +x script.exp &> /dev/null
-
-croncmd="(cd /root/.kpass/$User1 && /bin/timeout -s 2 60 ./script) > /root/.kpass/$User1/kpass.log"
-cronjob="* 2 * * * $croncmd"
+sudo chmod +x Exec$User1-KPass.sh &>/dev/null
+croncmd="(cd /root/.kpass/$User1 && ./Exec$User1-KPass.sh) > /root/.kpass/$User1/kpass.log"
+cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
-printf "${GRN}\nWe're done!\n"
+printf "${GRN}We're done!\n${NC}"
 echo ""
 #encrypt expect
-printf "Please run this after exit:\n\n${YEL}(/root/.cargo/bin/rshc -f script.exp -o script.rs && rm -f script.rs script.exp.rs script.exp && mv script /root/.kpass/$User1) &> /dev/null\n\n${NC}"
 
-sudo mkdir /root/.kpass/$User1 &>/dev/null
+sudo mkdir /root/.kpass/$User1 &> /dev/null
+sudo mv Exec$User1-KPass.sh /root/.kpass/$User1 &> /dev/null
 
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/script) &>/dev/null
+(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/Exec$User1-KPass.sh) &>/dev/null
+
 exit
