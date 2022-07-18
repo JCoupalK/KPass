@@ -37,11 +37,10 @@ chmod +x KPass.sh
 
 **Warning: Do not change the path of the files in the '.kpass' directory since the cronjob depends on it.**
 
-The path to the directory with everything in it is **/root/.kpass** and the cronjob log is in **/root/.kpass/[YOUR USER]/kpass.log
+The path to the directory with everything in it is **$PWD/.kpass** and the cronjob log is in **$PWD/.kpass/[YOUR USER]/kpass.log
 
 *And we're done!*
 
-If you messed up your input don't worry just rerun the script with autoexpect, it will overwrite everything.
+If you messed up your input don't worry just re-run the script, it will overwrite everything.
 
 Feel free to modify the code if there's something that you want to change.
-
