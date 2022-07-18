@@ -247,13 +247,13 @@ hash6=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";
 hash7=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd7" "$salt7")
 
 #password to set for each day
-Monday1=$(echo ${hash1})
-Tuesday1=$(echo ${hash2})
-Wednesday1=$(echo ${hash3})
-Thursday1=$(echo ${hash4})
-Friday1=$(echo ${hash5})
-Saturday1=$(echo ${hash6})
-Sunday1=$(echo ${hash7})
+Monday1=$(echo "'"${hash1}"'")
+Tuesday1=$(echo "'"${hash2}"'")
+Wednesday1=$(echo "'"${hash3}"'")
+Thursday1=$(echo "'"${hash4}"'")
+Friday1=$(echo "'"${hash5}"'")
+Saturday1=$(echo "'"${hash6}"'")
+Sunday1=$(echo "'"${hash7}"'")
 
 
 echo "#!/bin/bash
@@ -261,29 +261,29 @@ echo "#!/bin/bash
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
 
-whichdate=\$(date "'"+%A, %F, %I:%M"'")
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
 printf "'"\nKPass cron succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 
-whichday=\$(date +%A)
+whichday=\$(date "'"+%A"'")
 
-if [ \$whichday == "Monday" ]; then
+if [[ \$whichday == "'"Monday"'" ]]; then
   usermod -p $Monday1 $User1
-elif [ \$whichday == "Tuesday" ]; then
+elif [[ \$whichday == "'"Tuesday"'" ]]; then
   usermod -p $Tuesday1 $User1
-elif [ \$whichday == "Wednesday" ]; then
+elif [[ \$whichday == "'"Wednesday"'" ]]; then
   usermod -p $Wednesday1 $User1
-elif [ \$whichday == "Thursday" ]; then
+elif [[ \$whichday == "'"Thursday"'" ]]; then
   usermod -p $Thursday1 $User1
-elif [ \$whichday == "Friday" ]; then
+elif [[ \$whichday == "'"Friday"'" ]]; then
   usermod -p $Friday1 $User1
-elif [ \$whichday == "Saturday" ]; then
+elif [[ \$whichday == "'"Saturday"'" ]]; then
   usermod -p $Saturday1 $User1
-elif [ \$whichday == "Sunday" ]; then
+elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
 fi" > Exec$User1-KPass.sh
 
 #makes cronjob
-sudo chmod +x Exec$User1-KPass.sh &>/dev/null
+sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
 cronjob="* 6 * * * $croncmd"
 
