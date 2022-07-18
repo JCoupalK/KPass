@@ -13,15 +13,11 @@ echo '█████╔╝ ██████╔╝███████║█�
 echo '██╔═██╗ ██╔═══╝ ██╔══██║╚════██║╚════██║'
 echo '██║  ██╗██║     ██║  ██║███████║███████║'
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
-printf "\nPowered by KeepSec Technologies Inc.™\n"
-printf "${NC}\n\n"
-
-whichdate=$(date "+%A, %F, %I:%M")
-printf "Today is ${YEL}$whichdate${NC}\n\n"
+printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
 chmod 700 $PWD/KPass.sh &>/dev/null
-sudo mkdir /root/.kpass &>/dev/null
-cd /root/.kpass &> /dev/null
+sudo mkdir $PWD/.kpass &>/dev/null
+cd $PWD/.kpass &> /dev/null
 
 function installing {
   tput civis
@@ -41,10 +37,9 @@ disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo apt-get -y install cargo &>/dev/null
-
+  sudo apt-get -y install perl >/dev/null
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null && curl https://sh.rustup.rs -sSf &>/dev/null | sh -s -- -y &>/dev/null && sudo yum -y install cargo &>/dev/null
+  sudo yum -y install perl >/dev/null
 
 else
 
@@ -263,8 +258,13 @@ Sunday1=$(echo ${hash7})
 
 echo "#!/bin/bash
 
-#get the date
-whichday=\$(date +"%A")
+YEL=\$'\e[1;33m' # Yellow
+NC=\$'\033[0m' # No Color
+
+whichdate=\$(date "'"+%A, %F, %I:%M"'")
+printf "'"\nKPass cron succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+
+whichday=\$(date +%A)
 
 if [ \$whichday == "Monday" ]; then
   usermod -p $Monday1 $User1
@@ -284,7 +284,7 @@ fi" > Exec$User1-KPass.sh
 
 #makes cronjob
 sudo chmod +x Exec$User1-KPass.sh &>/dev/null
-croncmd="(cd /root/.kpass/$User1 && ./Exec$User1-KPass.sh) > /root/.kpass/$User1/kpass.log"
+croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
 cronjob="* 6 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
@@ -292,9 +292,9 @@ printf "${GRN}We're done!\n${NC}"
 echo ""
 #encrypt expect
 
-sudo mkdir /root/.kpass/$User1 &> /dev/null
-sudo mv Exec$User1-KPass.sh /root/.kpass/$User1 &> /dev/null
+sudo mkdir $User1 &> /dev/null
+sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
 
-(chmod 700 /root/.kpass && chmod 700 /root/.kpass/$User1 && chmod 700 /root/.kpass/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 /root/.kpass/$User1/Exec$User1-KPass.sh) &>/dev/null
+(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
 
 exit
