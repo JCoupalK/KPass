@@ -228,7 +228,7 @@ confirmPasswd6
 confirmPasswd7
 
 #salt is randomly generated with the variable pepper
-pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13)
+pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
 salt1=$(echo ${pepper})
 salt2=$(echo ${pepper})
 salt3=$(echo ${pepper})
