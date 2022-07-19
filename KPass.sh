@@ -15,10 +15,12 @@ echo '██║  ██╗██║     ██║  ██║██████�
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
 printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
+#make and go to .kpass directory
 chmod 700 $PWD/KPass.sh &>/dev/null
 sudo mkdir $PWD/.kpass &>/dev/null
 cd $PWD/.kpass &> /dev/null
 
+#function for the installing wheel
 function installing {
   tput civis
   spinner="⣾⣽⣻⢿⡿⣟⣯⣷"
@@ -36,17 +38,13 @@ SPIN_PID=$!
 disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
+#install perl for the hash generation based on your package manager
 if [ -n "$(command -v apt-get)" ]; then
   sudo apt-get -y install perl >/dev/null
 elif [ -n "$(command -v yum)" ]; then
   sudo yum -y install perl >/dev/null
-
-else
-
-  printf "\n${RED}Your Linux distro is not supported, only RHEL-based and Debian-based is supported at the moment${NC}\n"
-
-  exit
-
+elif [ -n "$(command -v pacman)" ]; then
+  sudo pacman -S foobar >/dev/null
 fi
 
 kill -9 $SPIN_PID &>/dev/null
