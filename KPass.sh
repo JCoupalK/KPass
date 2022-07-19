@@ -285,7 +285,7 @@ fi" > Exec$User1-KPass.sh
 #makes cronjob
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
-cronjob="* 6 * * * $croncmd"
+cronjob="* 2 * * * $croncmd"
 
 printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 printf "${GRN}We're done!\n${NC}"
