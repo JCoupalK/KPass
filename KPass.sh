@@ -284,7 +284,7 @@ fi" > Exec$User1-KPass.sh
 
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
-#makes two cronjobs just in case since your password is on the line
+#make the cronjob
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="$User1 /usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
