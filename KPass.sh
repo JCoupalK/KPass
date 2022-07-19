@@ -255,7 +255,7 @@ Friday1=$(echo "'"${hash5}"'")
 Saturday1=$(echo "'"${hash6}"'")
 Sunday1=$(echo "'"${hash7}"'")
 
-
+#create secondary bash file for cron
 echo "#!/bin/bash
 
 YEL=\$'\e[1;33m' # Yellow
@@ -282,19 +282,25 @@ elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
 fi" > Exec$User1-KPass.sh
 
-#makes cronjob
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
-cronjob="* 2 * * * $croncmd"
 
-printf "$cronjob\n" > /etc/cron.d/$User1-kpass
-printf "${GRN}We're done!\n${NC}"
-echo ""
-#encrypt expect
+#makes two cronjobs just in case since your password is on the line
+sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+croncmd="$User1 /usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
+cronjob="0 0,12 * * * $croncmd"
+
+( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 sudo mkdir $User1 &> /dev/null
 sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
 
+#make restrictions
 (chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
+
+#execute secondary script to change the password
+(/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh) &> /dev/null
+
+printf "${GRN}We're done!\n${NC}"
+echo ""
 
 exit
