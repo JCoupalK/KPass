@@ -39,6 +39,8 @@ chmod +x KPass.sh
 
 The path to the directory with everything in it is **$PWD/.kpass** and the cronjob log is in **$PWD/.kpass/[YOUR USER]/kpass.log** 
 
+Note: the cronjob runs twice a day just to make sure the password changed (just in case)
+
 *And we're done!*
 
 If you messed up your input don't worry just re-run the script, it will overwrite everything.
