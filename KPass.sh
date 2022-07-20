@@ -284,7 +284,7 @@ sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
 #make a cron job that runs at 12AM and 12PM
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="/usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
+croncmd="/usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/$User1/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
 ( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
