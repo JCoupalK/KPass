@@ -45,4 +45,16 @@ Note: the cronjob runs twice a day (12AM and 12PM) just to make sure the passwor
 
 If you messed up your input don't worry just re-run the script, it will overwrite everything.
 
+
+If you want to uninstall it do:
+```bash
+rm -rf [YOUR DIRECTORY]/.kpass
+```
+then: 
+```bash
+crontab -e
+```
+and delete the KPass crontab.
+
+
 Feel free to modify the code if there's something that you want to change.
