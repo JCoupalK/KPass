@@ -282,7 +282,7 @@ fi" > Exec$User1-KPass.sh
 
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
-#make the cronjob
+#make a cron job that runs at 12AM and 12PM
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="/usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
