@@ -260,7 +260,7 @@ YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
 
 whichdate=\$(date "'"+%A, %F, %H:%M"'")
-printf "'"\nKPass cron succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 
 whichday=\$(date "'"+%A"'")
 
