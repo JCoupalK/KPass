@@ -284,10 +284,10 @@ sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
 #make the cronjob
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="$User1 /usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
+croncmd="/usr/bin/bash $PWD/$User1/Execroot-KPass.sh > $PWD/root/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
-( crontab -l &> /dev/null | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
 
 sudo mkdir $User1 &> /dev/null
 sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
