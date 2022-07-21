@@ -259,9 +259,6 @@ echo "#!/bin/bash
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
 
-whichdate=\$(date "'"+%A, %F, %H:%M"'")
-printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
-
 whichday=\$(date "'"+%A"'")
 
 if [[ \$whichday == "'"Monday"'" ]]; then
@@ -278,7 +275,10 @@ elif [[ \$whichday == "'"Saturday"'" ]]; then
   usermod -p $Saturday1 $User1
 elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
-fi" > Exec$User1-KPass.sh
+fi  
+
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
+printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"" > Exec$User1-KPass.sh
 
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
