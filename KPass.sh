@@ -15,10 +15,12 @@ echo '██║  ██╗██║     ██║  ██║██████�
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
 printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
+#make and go to .kpass directory
 chmod 700 $PWD/KPass.sh &>/dev/null
 sudo mkdir $PWD/.kpass &>/dev/null
 cd $PWD/.kpass &> /dev/null
 
+#function for the installing wheel
 function installing {
   tput civis
   spinner="⣾⣽⣻⢿⡿⣟⣯⣷"
@@ -36,17 +38,13 @@ SPIN_PID=$!
 disown
 printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
+#install perl for the hash generation based on your package manager
 if [ -n "$(command -v apt-get)" ]; then
   sudo apt-get -y install perl >/dev/null
 elif [ -n "$(command -v yum)" ]; then
   sudo yum -y install perl >/dev/null
-
-else
-
-  printf "\n${RED}Your Linux distro is not supported, only RHEL-based and Debian-based is supported at the moment${NC}\n"
-
-  exit
-
+elif [ -n "$(command -v pacman)" ]; then
+  sudo pacman -S foobar >/dev/null
 fi
 
 kill -9 $SPIN_PID &>/dev/null
@@ -255,14 +253,11 @@ Friday1=$(echo "'"${hash5}"'")
 Saturday1=$(echo "'"${hash6}"'")
 Sunday1=$(echo "'"${hash7}"'")
 
-
+#create secondary bash file for cron
 echo "#!/bin/bash
 
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
-
-whichdate=\$(date "'"+%A, %F, %H:%M"'")
-printf "'"\nKPass cron succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 
 whichday=\$(date "'"+%A"'")
 
@@ -280,21 +275,30 @@ elif [[ \$whichday == "'"Saturday"'" ]]; then
   usermod -p $Saturday1 $User1
 elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
-fi" > Exec$User1-KPass.sh
+fi  
 
-#makes cronjob
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
+printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"" > Exec$User1-KPass.sh
+
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="(cd $PWD/$User1 && ./Exec$User1-KPass.sh) > $PWD/$User1/kpass.log"
-cronjob="* 6 * * * $croncmd"
 
-printf "$cronjob\n" > /etc/cron.d/$User1-kpass
-printf "${GRN}We're done!\n${NC}"
-echo ""
-#encrypt expect
+#make a cron job that runs at 12AM and 12PM
+sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+croncmd="/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
+cronjob="0 0,12 * * * $croncmd"
+
+( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
 
 sudo mkdir $User1 &> /dev/null
 sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
 
+#make restrictions
 (chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
+
+#execute secondary script to change the password
+(/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh) &> /dev/null
+
+printf "${GRN}We're done!\n${NC}"
+echo ""
 
 exit
