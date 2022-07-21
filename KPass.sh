@@ -259,7 +259,7 @@ echo "#!/bin/bash
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
 
-whichday=\$(date "'"+%A"'")
+whichday=\$(date +%A)
 
 if [[ \$whichday == "'"Monday"'" ]]; then
   usermod -p $Monday1 $User1
