@@ -17,7 +17,7 @@ printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
 #make and go to .kpass directory
 chmod 700 $PWD/KPass.sh &>/dev/null
-sudo mkdir $PWD/.kpass &>/dev/null
+mkdir $PWD/.kpass &>/dev/null
 cd $PWD/.kpass &> /dev/null
 
 #function for the installing wheel
@@ -40,11 +40,11 @@ printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 #install perl for the hash generation based on your package manager
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null
+  apt-get -y install perl >/dev/null
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null
+  yum -y install perl >/dev/null
 elif [ -n "$(command -v pacman)" ]; then
-  sudo pacman -S foobar >/dev/null
+  pacman -S foobar >/dev/null
 fi
 
 kill -9 $SPIN_PID &>/dev/null
@@ -226,13 +226,13 @@ confirmPasswd6
 confirmPasswd7
 
 #salt is randomly generated
-salt1=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt2=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt3=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt4=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt5=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt6=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt7=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
+salt1=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt2=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt3=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt4=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt5=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt6=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt7=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
 
 #generate hashes through perl
 hash1=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd1" "$salt1")
@@ -275,17 +275,17 @@ fi
 whichdate=\$(date "'"+%A, %F, %H:%M"'")
 printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"" > Exec$User1-KPass.sh
 
-sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+chmod +x Exec$User1-KPass.sh &> /dev/null
 
 #make a cron job that runs at 12AM and 12PM
-sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
 ( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
 
-sudo mkdir $User1 &> /dev/null
-sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
+mkdir $User1 &> /dev/null
+mv Exec$User1-KPass.sh $User1 &> /dev/null
 
 #make restrictions
 (chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
