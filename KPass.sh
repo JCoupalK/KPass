@@ -244,13 +244,13 @@ hash6=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";
 hash7=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd7" "$salt7")
 
 #password to set for each day
-Monday1=$(echo '"'${hash1}'"')
-Tuesday1=$(echo '"'${hash2}'"')
-Wednesday1=$(echo '"'${hash3}'"')
-Thursday1=$(echo '"'${hash4}'"')
-Friday1=$(echo '"'${hash5}'"')
-Saturday1=$(echo '"'${hash6}'"')
-Sunday1=$(echo '"'${hash7}'"')
+Monday1=$(echo "'"${hash1}"'")
+Tuesday1=$(echo "'"${hash2}"'")
+Wednesday1=$(echo "'"${hash3}"'")
+Thursday1=$(echo "'"${hash4}"'")
+Friday1=$(echo "'"${hash5}"'")
+Saturday1=$(echo "'"${hash6}"'")
+Sunday1=$(echo "'"${hash7}"'")
 
 #create secondary bash file for cron
 echo "#!/bin/bash
