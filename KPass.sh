@@ -225,7 +225,7 @@ confirmPasswd6
 
 confirmPasswd7
 
-#salt is randomly generated with the variable pepper
+#salt is randomly generated
 salt1=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
 salt2=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
 salt3=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
@@ -244,47 +244,36 @@ hash6=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";
 hash7=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd7" "$salt7")
 
 #password to set for each day
-Monday1=$(echo '\'"${hash1}")
-Tuesday1=$(echo '\'"${hash2}")
-Wednesday1=$(echo '\'"${hash3}")
-Thursday1=$(echo '\'"${hash4}")
-Friday1=$(echo '\'"${hash5}")
-Saturday1=$(echo '\'"${hash6}")
-Sunday1=$(echo '\'"${hash7}")
+Monday1=$(echo '"'${hash1}'"')
+Tuesday1=$(echo '"'${hash2}'"')
+Wednesday1=$(echo '"'${hash3}'"')
+Thursday1=$(echo '"'${hash4}'"')
+Friday1=$(echo '"'${hash5}'"')
+Saturday1=$(echo '"'${hash6}'"')
+Sunday1=$(echo '"'${hash7}'"')
 
 #create secondary bash file for cron
 echo "#!/bin/bash
-
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
-
 whichday=\$(date +%A)
-whichdate=\$(date "'"+%A, %F, %H:%M"'")
-
 if [[ \$whichday == "'"Monday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Monday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Monday1 $User1
 elif [[ \$whichday == "'"Tuesday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Tuesday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Tuesday1 $User1
 elif [[ \$whichday == "'"Wednesday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Wednesday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Wednesday1 $User1
 elif [[ \$whichday == "'"Thursday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Thursday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Thursday1 $User1
 elif [[ \$whichday == "'"Friday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Friday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Friday1 $User1
 elif [[ \$whichday == "'"Saturday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Saturday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Saturday1 $User1
 elif [[ \$whichday == "'"Sunday"'" ]]; then
-  perl -pe 's|($User1):(\$.*?:)|\1:$Sunday1:|' /etc/shadow > /etc/shadow.new
-  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+  usermod -p $Sunday1 $User1
 fi  
-
-exit"  > Exec$User1-KPass.sh
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
+printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"" > Exec$User1-KPass.sh
 
 sudo chmod +x Exec$User1-KPass.sh &> /dev/null
 
