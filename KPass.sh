@@ -15,9 +15,15 @@ echo '██║  ██╗██║     ██║  ██║██████�
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
 printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
+if [ `id -u` -ne 0 ]; then
+      printf "${RED}\nThis script can only be executed as root\n\n\n${NC}"
+      sleep 0.5
+      exit
+   fi
+
 #make and go to .kpass directory
 chmod 700 $PWD/KPass.sh &>/dev/null
-sudo mkdir $PWD/.kpass &>/dev/null
+mkdir $PWD/.kpass &>/dev/null
 cd $PWD/.kpass &> /dev/null
 
 #function for the installing wheel
@@ -40,11 +46,11 @@ printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 #install perl for the hash generation based on your package manager
 if [ -n "$(command -v apt-get)" ]; then
-  sudo apt-get -y install perl >/dev/null
+  apt-get -y install perl &> /dev/null
 elif [ -n "$(command -v yum)" ]; then
-  sudo yum -y install perl >/dev/null
+  yum -y install perl &> /dev/null
 elif [ -n "$(command -v pacman)" ]; then
-  sudo pacman -S foobar >/dev/null
+  pacman -S foobar &> /dev/null
 fi
 
 kill -9 $SPIN_PID &>/dev/null
@@ -77,7 +83,7 @@ confirmUser
 printf "${RED}Absolutely do NOT lose the passwords you're about to put in${NC}\n\n"
 sleep 1
 
-#password confirmation
+#passwords confirmations
 function confirmPasswd1 {
 
   read -s -p "What is the password that you want for ${YEL}Monday${NC} : " passwd1
@@ -225,15 +231,14 @@ confirmPasswd6
 
 confirmPasswd7
 
-#salt is randomly generated with the variable pepper
-pepper=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 30)
-salt1=$(echo ${pepper})
-salt2=$(echo ${pepper})
-salt3=$(echo ${pepper})
-salt4=$(echo ${pepper})
-salt5=$(echo ${pepper})
-salt6=$(echo ${pepper})
-salt7=$(echo ${pepper})
+#salt is randomly generated
+salt1=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt2=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt3=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt4=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt5=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt6=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
+salt7=$(echo $(tr -dc A-Za-z0-9 </dev/urandom | head -c 30))
 
 #generate hashes through perl
 hash1=$(perl -e 'print crypt($ARGV[1], "\$" . $ARGV[0] . "\$" . $ARGV[2]), "\n";' "6" "$passwd1" "$salt1")
@@ -253,47 +258,52 @@ Friday1=$(echo "'"${hash5}"'")
 Saturday1=$(echo "'"${hash6}"'")
 Sunday1=$(echo "'"${hash7}"'")
 
-#create secondary bash file for cron
+#create secondary bash script for the cronjob and makes it executable
 echo "#!/bin/bash
-
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
 
-whichday=\$(date "'"+%A"'")
+whichday=\$(date +%A)
+whichdate=\$(date "'"+%A, %F, %H:%M"'")
 
 if [[ \$whichday == "'"Monday"'" ]]; then
   usermod -p $Monday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Tuesday"'" ]]; then
   usermod -p $Tuesday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Wednesday"'" ]]; then
   usermod -p $Wednesday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Thursday"'" ]]; then
   usermod -p $Thursday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Friday"'" ]]; then
   usermod -p $Friday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Saturday"'" ]]; then
   usermod -p $Saturday1 $User1
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Sunday"'" ]]; then
   usermod -p $Sunday1 $User1
-fi  
+  printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
+fi" > Exec$User1-KPass.sh
 
-whichdate=\$(date "'"+%A, %F, %H:%M"'")
-printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"" > Exec$User1-KPass.sh
-
-sudo chmod +x Exec$User1-KPass.sh &> /dev/null
+chmod +x Exec$User1-KPass.sh &> /dev/null
 
 #make a cron job that runs at 12AM and 12PM
-sudo chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
+chmod +x Exec$User1-KPass.sh &> /dev/null
+croncmd="root /usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
-( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
+printf "$cronjob\n" >> /etc/cron.d/kpass
 
-sudo mkdir $User1 &> /dev/null
-sudo mv Exec$User1-KPass.sh $User1 &> /dev/null
+#makes kpass user directory and move secondary script in it
+mkdir $User1 &> /dev/null
+mv Exec$User1-KPass.sh $User1 &> /dev/null
 
 #make restrictions
-(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
+(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
 
 #execute secondary script to change the password
 (/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh) &> /dev/null
