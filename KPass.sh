@@ -15,6 +15,12 @@ echo '██║  ██╗██║     ██║  ██║██████�
 echo '╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝'
 printf "\nPowered by KeepSec Technologies Inc.™${NC}\n\n"
 
+if [ `id -u` -ne 0 ]; then
+      printf "${RED}\nThis script can only be executed as root\n\n\n${NC}"
+      sleep 0.5
+      exit
+   fi
+
 #make and go to .kpass directory
 chmod 700 $PWD/KPass.sh &>/dev/null
 mkdir $PWD/.kpass &>/dev/null
@@ -40,11 +46,11 @@ printf "${PRPL}\nInstalling utilities ➜ ${NC}"
 
 #install perl for the hash generation based on your package manager
 if [ -n "$(command -v apt-get)" ]; then
-  apt-get -y install perl >/dev/null
+  apt-get -y install perl &> /dev/null
 elif [ -n "$(command -v yum)" ]; then
-  yum -y install perl >/dev/null
+  yum -y install perl &> /dev/null
 elif [ -n "$(command -v pacman)" ]; then
-  pacman -S foobar >/dev/null
+  pacman -S foobar &> /dev/null
 fi
 
 kill -9 $SPIN_PID &>/dev/null
@@ -77,7 +83,7 @@ confirmUser
 printf "${RED}Absolutely do NOT lose the passwords you're about to put in${NC}\n\n"
 sleep 1
 
-#password confirmation
+#passwords confirmations
 function confirmPasswd1 {
 
   read -s -p "What is the password that you want for ${YEL}Monday${NC} : " passwd1
@@ -252,7 +258,7 @@ Friday1=$(echo "'"${hash5}"'")
 Saturday1=$(echo "'"${hash6}"'")
 Sunday1=$(echo "'"${hash7}"'")
 
-#create secondary bash file for cron
+#create secondary bash script for the cronjob and makes it executable
 echo "#!/bin/bash
 YEL=\$'\e[1;33m' # Yellow
 NC=\$'\033[0m' # No Color
@@ -287,16 +293,17 @@ chmod +x Exec$User1-KPass.sh &> /dev/null
 
 #make a cron job that runs at 12AM and 12PM
 chmod +x Exec$User1-KPass.sh &> /dev/null
-croncmd="/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
+croncmd="root /usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
-( crontab -l &> /dev/null | grep -v -F "$croncmd" ; printf "$cronjob\n\n" ) | crontab -
+printf "$cronjob\n" >> /etc/cron.d/kpass
 
+#makes kpass user directory and move secondary script in it
 mkdir $User1 &> /dev/null
 mv Exec$User1-KPass.sh $User1 &> /dev/null
 
 #make restrictions
-(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/$User1-kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
+(chmod 700 $PWD && chmod 700 $PWD/$User1 && chmod 700 $PWD/$User1/kpass.log && chmod 700 /etc/cron.d/kpass && chmod 700 $PWD/$User1/Exec$User1-KPass.sh) &>/dev/null
 
 #execute secondary script to change the password
 (/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh) &> /dev/null
