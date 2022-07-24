@@ -6,32 +6,33 @@
 
 **1)** Being logged in as root (Very Important to access /etc/shadow)
 
-**2)** Assure yourself that the timezone of your server is the good one
+**2)** Assure yourself that the timezone of your server is the good one:
+```bash
+timedatectl list-timezones
+timedatectl set-timezone <your_time_zone>
+```
 
 That's it!
 
 ### ***What's next:***
 
-**1)** Install the KPass.sh file and make it executable.
-
-To install it: 
-
+**1)** Install the KPass.sh file:
 ```bash
 wget https://raw.githubusercontent.com/KeepSec-Technologies/KPass/main/KPass.sh
 ```
 
-To make it executable:
+**3)** Make it executable:
 ```bash
 chmod +x KPass.sh
 ```
-**2)** Then run it: 
+**3)** Then run it: 
 ```bash
 ./KPass.sh
 ```
 
-**3)** Answer the questions like the image below
+**3)** Answer the questions like the image below:
 
-![image](https://user-images.githubusercontent.com/108779415/179622354-ea57f2b9-b33f-45c3-9a8d-1208a8e92d03.png)
+![image](https://user-images.githubusercontent.com/108779415/180656391-b31f214b-b38e-48ca-9834-69c9542284f1.png)
 
 
 
@@ -52,9 +53,7 @@ rm -rf [YOUR DIRECTORY]/.kpass
 ```
 then: 
 ```bash
-crontab -e
+rm -f /etc/cron.d/kpass
 ```
-and delete the KPass crontab.
-
 
 Feel free to modify the code if there's something that you want to change.
