@@ -267,25 +267,25 @@ whichday=\$(date +%A)
 whichdate=\$(date "'"+%A, %F, %H:%M"'")
 
 if [[ \$whichday == "'"Monday"'" ]]; then
-  usermod -p $Monday1 $User1
+  /usr/sbin/usermod -p $Monday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Tuesday"'" ]]; then
-  usermod -p $Tuesday1 $User1
+  /usr/sbin/usermod -p $Tuesday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Wednesday"'" ]]; then
-  usermod -p $Wednesday1 $User1
+  /usr/sbin/usermod -p $Wednesday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Thursday"'" ]]; then
-  usermod -p $Thursday1 $User1
+  /usr/sbin/usermod -p $Thursday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Friday"'" ]]; then
-  usermod -p $Friday1 $User1
+  /usr/sbin/usermod -p $Friday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Saturday"'" ]]; then
-  usermod -p $Saturday1 $User1
+  /usr/sbin/usermod -p $Saturday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 elif [[ \$whichday == "'"Sunday"'" ]]; then
-  usermod -p $Sunday1 $User1
+  /usr/sbin/usermod -p $Sunday1 $User1
   printf "'"\nKPass cron last succesfully completed at ${YEL}$whichdate${NC}\n\n"'"
 fi" > Exec$User1-KPass.sh
 
