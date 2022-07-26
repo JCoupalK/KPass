@@ -49,7 +49,7 @@ If you messed up your input don't worry just re-run the script, it will overwrit
 
 If you want to uninstall it do:
 ```bash
-rm -rf [YOUR DIRECTORY]/.kpass
+rm -rf .kpass
 ```
 then: 
 ```bash
