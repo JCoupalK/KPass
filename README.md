@@ -53,7 +53,7 @@ rm -rf .kpass
 ```
 then: 
 ```bash
-rm -f /etc/cron.d/kpass
+rm -f /etc/cron.d/[YOUR USER]-kpass
 ```
 
 Feel free to modify the code if there's something that you want to change.
