@@ -296,7 +296,7 @@ chmod +x Exec$User1-KPass.sh &> /dev/null
 croncmd="root /usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh > $PWD/$User1/kpass.log"
 cronjob="0 0,12 * * * $croncmd"
 
-printf "$cronjob\n" >> /etc/cron.d/kpass
+printf "$cronjob\n" > /etc/cron.d/$User1-kpass
 
 #makes kpass user directory and move secondary script in it
 mkdir $User1 &> /dev/null
@@ -308,7 +308,6 @@ mv Exec$User1-KPass.sh $User1 &> /dev/null
 #execute secondary script to change the password
 (/usr/bin/bash $PWD/$User1/Exec$User1-KPass.sh) &> /dev/null
 
-printf "${GRN}We're done!\n${NC}"
-echo ""
+printf "${GRN}We're done!\n\n${NC}"
 
 exit
